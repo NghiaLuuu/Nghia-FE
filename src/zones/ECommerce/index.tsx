@@ -64,28 +64,31 @@ export default function ECommerceZone() {
           <span className="text-xl text-gray-500 line-through mb-1 font-mono">{TECH_PRODUCT.originalPrice}đ</span>
         </div>
 
-        {/* Specs Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-10">
+        {/* Specs Grid - Hairline Grid, No Rounded Corners, Monospace */}
+        <div className="grid grid-cols-2 mb-10 border-t border-l border-[var(--text-color)]/20">
           {TECH_PRODUCT.specs.map((spec, idx) => {
             const Icon = spec.icon;
             return (
-              <div key={idx} className="bg-[var(--text-color)]/5 border border-[var(--text-color)]/10 rounded-xl p-4 flex flex-col gap-2 hover:bg-[var(--text-color)]/10 transition-colors">
-                <Icon className="text-[var(--accent-color)]" size={24} />
-                <span className="text-sm text-gray-400">{spec.label}</span>
-                <span className="font-bold">{spec.value}</span>
+              <div key={idx} className="bg-transparent border-b border-r border-[var(--text-color)]/20 p-5 flex flex-col gap-3 hover:bg-[var(--accent-color)]/5 transition-colors relative group">
+                <Icon className="text-[var(--accent-color)] group-hover:scale-110 transition-transform" size={24} />
+                <span className="text-xs text-gray-400 tracking-[0.2em] uppercase">{spec.label}</span>
+                <span className="font-mono text-sm font-bold text-white tracking-wider">{spec.value}</span>
+                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--accent-color)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
             );
           })}
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-4">
-          <button className="flex-1 bg-[var(--accent-color)] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:shadow-[0_15px_40px_rgba(59,130,246,0.5)]">
+        {/* Actions - Sharp edges, intense glow */}
+        <div className="flex gap-0">
+          <button className="flex-1 bg-transparent text-[var(--accent-color)] font-mono font-bold tracking-widest py-5 px-6 border border-[var(--accent-color)] flex items-center justify-center gap-3 hover:bg-[var(--accent-color)] hover:text-white hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] transition-all duration-300 relative group overflow-hidden">
+            {/* Scanline effect on button */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:100%_4px] opacity-0 group-hover:opacity-100 pointer-events-none"></div>
             <ShoppingCart size={24} />
             MUA NGAY
           </button>
-          <button className="px-6 py-5 rounded-2xl border border-[var(--text-color)]/20 flex items-center justify-center gap-2 hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] transition-all font-bold">
-            So sánh <ChevronRight size={20} />
+          <button className="px-8 py-5 border border-l-0 border-[var(--text-color)]/20 flex items-center justify-center gap-2 hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] transition-all font-mono font-bold tracking-widest text-sm uppercase">
+            So sánh <ChevronRight size={18} />
           </button>
         </div>
         
