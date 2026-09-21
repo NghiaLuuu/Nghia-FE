@@ -53,7 +53,7 @@ export default function EnglishZone() {
 
             {/* Primary Action */}
             <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
-              <button className="w-full sm:w-auto bg-[var(--cta-color)] text-white px-10 py-5 uppercase font-black text-xl tracking-wider hover:scale-105 active:scale-95 transition-transform duration-300 shadow-2xl shadow-[var(--cta-color)]/30 flex items-center justify-center gap-3">
+              <button className="w-full sm:w-auto bg-[var(--cta-color)] text-white px-10 py-5 uppercase font-black text-xl tracking-wider hover:scale-105 active:scale-95 transition-transform duration-300 flex items-center justify-center gap-3 border-none outline-none">
                 ĐẶT LỊCH TEST ĐẦU VÀO <ArrowRight size={24} />
               </button>
               <span className="font-medium text-gray-500 uppercase tracking-widest text-sm flex items-center gap-2">
@@ -96,7 +96,7 @@ export default function EnglishZone() {
                 <h3 className="text-2xl font-bold uppercase tracking-widest mb-1">Trần Nguyễn Phương Anh</h3>
                 <p className="text-gray-400 font-medium">Khóa Bootcamp K42 - Lộ trình 8 tuần</p>
               </div>
-              <div className="px-4 py-2 bg-white/10 text-white text-sm font-bold uppercase tracking-widest backdrop-blur-sm">
+              <div className="px-4 py-2 bg-white/20 text-white text-sm font-bold uppercase tracking-widest border border-white/10">
                 Đã đạt mục tiêu
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function EnglishZone() {
             <div className="mt-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div>
                 <p className="text-gray-400 font-bold uppercase tracking-widest mb-2 text-sm">Điểm Overall</p>
-                <div className="text-[15vw] md:text-[10vw] font-black leading-none tracking-tighter text-[var(--cta-color)] drop-shadow-2xl">
+                <div className="text-[15vw] md:text-[10vw] font-black leading-none tracking-tighter text-[var(--cta-color)]">
                   <CountUp value={8.5} />
                 </div>
               </div>

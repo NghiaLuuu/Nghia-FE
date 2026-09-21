@@ -32,7 +32,7 @@ export default function FintechZone() {
             <div className="flex-1 relative flex items-end">
               {/* Fake gradient chart area */}
               <div className="w-full h-48 bg-gradient-to-t from-violet-600/20 to-transparent border-t border-violet-500 relative">
-                <div className="absolute -top-1 right-0 w-2 h-2 bg-violet-400 shadow-[0_0_10px_var(--accent-color)]"></div>
+                <div className="absolute -top-1 right-0 w-2 h-2 bg-violet-400"></div>
               </div>
             </div>
             <div className="flex justify-between mt-4 text-xs font-mono text-slate-500">
