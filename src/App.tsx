@@ -8,7 +8,11 @@ import FashionZone from './zones/Fashion';
 import AnimeZone from './zones/Anime';
 import TravelZone from './zones/Travel';
 import WeddingZone from './zones/Wedding';
-
+import LookbookZone from './zones/Lookbook';
+import HmiZone from './zones/Hmi';
+import EnglishZone from './zones/English';
+import FintechZone from './zones/Fintech';
+import IviZone from './zones/Ivi';
 export default function App() {
   const [activeZone, setActiveZone] = useState('ecommerce');
 
@@ -24,12 +28,17 @@ export default function App() {
       case 'anime': return <AnimeZone key="anime" />;
       case 'travel': return <TravelZone key="travel" />;
       case 'wedding': return <WeddingZone key="wedding" />;
+      case 'lookbook': return <LookbookZone key="lookbook" />;
+      case 'hmi': return <HmiZone key="hmi" />;
+      case 'english': return <EnglishZone key="english" />;
+      case 'fintech': return <FintechZone key="fintech" />;
+      case 'ivi': return <IviZone key="ivi" />;
       default: return <ECommerceZone key="ecommerce" />;
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col w-full overflow-hidden relative">
+    <div className="min-h-screen flex flex-col w-full overflow-x-clip relative">
       <Navbar activeZone={activeZone} setActiveZone={setActiveZone} />
       <div className="flex-1 w-full pt-[72px]">
         <AnimatePresence mode="wait">

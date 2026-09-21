@@ -34,46 +34,46 @@ export default function FashionZone() {
         </motion.h1>
       </div>
 
-      <div className="pt-32 px-4 md:px-12 max-w-[1920px] mx-auto relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center min-h-screen">
+      <div className="pt-32 pb-24 px-4 md:px-12 max-w-[1920px] mx-auto relative grid grid-cols-1 md:grid-cols-12 grid-rows-[1fr_auto] min-h-screen gap-y-12">
         
-        {/* Left Col - Huge Text & Button */}
-        <div className="col-span-1 md:col-span-5 flex flex-col justify-center h-full z-30 pointer-events-none">
+        {/* Lớp Typography (Nằm dưới - DOM Order 1 - Row 1) */}
+        <div className="md:row-start-1 md:col-start-1 md:col-span-8 flex flex-col justify-start relative">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-[var(--accent-color)] font-bold tracking-[0.2em] mb-4 uppercase">{FASHION_ITEM.sub}</p>
-            <h1 className="text-edge text-[20vw] md:text-[10vw] mb-4 relative z-20 mix-blend-difference leading-none">{FASHION_ITEM.name}</h1>
+            {/* Title */}
+            <p className="text-[var(--accent-color)] font-bold tracking-[0.2em] mb-2 uppercase">{FASHION_ITEM.sub}</p>
+            <h1 className="font-black text-[25vw] md:text-[14vw] leading-[0.8] mb-8 md:mb-12 uppercase tracking-tighter mix-blend-difference">{FASHION_ITEM.name}</h1>
             
-            <div className="ml-4 md:ml-24 max-w-sm border-l-4 border-[var(--accent-color)] pl-6 relative">
-              <div className="absolute -left-12 -top-12 text-[8rem] text-white/10 font-serif leading-none">"</div>
-              <p className="text-lg font-light leading-relaxed mb-8">{FASHION_ITEM.desc}</p>
+            {/* Description */}
+            <div className="max-w-md pl-2">
+              <p className="text-xl font-light leading-relaxed text-gray-300">{FASHION_ITEM.desc}</p>
             </div>
           </motion.div>
         </div>
 
-        {/* Right Col - Broken Grid Images & Overlapping Typo */}
-        <div className="col-span-1 md:col-span-7 h-[60vh] md:h-[80vh] relative mt-10 md:mt-0">
-          
-          {/* Giant overlapping Typography & CTA (Nước đi #4: Typo đan xen) - Đẩy xuống z-10 để giày đè lên */}
-          <div className="absolute -bottom-10 md:bottom-20 left-4 md:-left-32 z-10 flex flex-col items-start gap-4 pointer-events-auto">
-            <span className="text-[12vw] md:text-[6vw] font-black leading-none tracking-tighter text-white whitespace-nowrap drop-shadow-lg">{FASHION_ITEM.price}</span>
-            <button className="bg-[var(--accent-color)] text-white px-8 py-4 md:px-12 md:py-6 uppercase font-black text-2xl md:text-5xl tracking-widest hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_40px_var(--accent-color)] border-none">
-              COP NOW
-            </button>
-          </div>
-          {/* Main Product Image - z-20 đè lên cụm Text. Phải đặt mix-blend-lighten ở thẻ cha có transform để tránh lỗi Stacking Context che khuất Text */}
+        {/* Lớp Hình Ảnh (Nằm giữa - DOM Order 2, đè lên Typography - Span 2 rows) */}
+        <div className="md:row-start-1 md:row-span-2 md:col-start-6 md:col-span-7 relative flex items-center justify-center pointer-events-none mix-blend-lighten">
           <motion.div 
             style={{ y: y1 }}
-            className="absolute top-0 right-0 w-[90%] md:w-[80%] h-[100%] md:h-[90%] z-20 pointer-events-none mix-blend-lighten"
+            className="w-full h-full flex items-center justify-center scale-125 md:scale-150 origin-center"
           >
             <img 
               src={FASHION_ITEM.image1} 
               alt="Main Product" 
-              className="w-full h-full object-contain filter contrast-125 saturate-0 hover:saturate-100 hover:scale-105 transition-all duration-700 pointer-events-auto"
+              className="w-full h-auto max-h-[80vh] object-contain filter contrast-125 saturate-0 hover:saturate-100 transition-all duration-700 pointer-events-auto"
             />
           </motion.div>
+        </div>
+
+        {/* Lớp Hành Động (Nằm trên cùng - DOM Order 3 - Row 2) */}
+        <div className="md:row-start-2 md:col-start-1 md:col-span-5 relative flex flex-col items-start gap-4">
+          <span className="font-sans text-[12vw] md:text-[4vw] font-black leading-none tracking-tight text-white drop-shadow-md">{FASHION_ITEM.price}</span>
+          <button className="bg-[var(--accent-color)] text-white px-12 py-6 uppercase font-black text-3xl md:text-4xl tracking-widest hover:bg-white hover:text-black transition-colors duration-300 border-none outline-none">
+            COP NOW
+          </button>
         </div>
 
       </div>

@@ -64,6 +64,48 @@ body {
   --font-primary: var(--font-serif);
 }
 
+/* 6. High-End Lookbook (Editorial) */
+.theme-lookbook {
+  --bg-color: #000000;
+  --text-color: #f9f9f9;
+  --accent-color: #ffffff;
+  --font-primary: var(--font-serif);
+}
+
+/* 7. HMI Công Nghiệp */
+.theme-hmi {
+  --bg-color: #111111;
+  --text-color: #e5e5e5;
+  --accent-color: #16a34a; /* Safe Green */
+  --font-primary: var(--font-sans);
+}
+
+
+/* 8. English Center (IELTS Mastery) */
+.theme-english {
+  --bg-color: #ffffff;
+  --text-color: #0f172a; /* Deep Slate/Navy */
+  --accent-color: #0f172a; /* Navy */
+  --cta-color: #ff5a36; /* Coral / Neon Orange */
+  --font-primary: var(--font-sans);
+}
+
+/* 9. Fintech BI */
+.theme-fintech {
+  --bg-color: #020617; /* Navy */
+  --text-color: #f8fafc;
+  --accent-color: #8b5cf6; /* Trust Purple */
+  --font-primary: var(--font-sans);
+}
+
+/* 10. Ô tô IVI */
+.theme-ivi {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --accent-color: #f97316; /* Neon Orange */
+  --font-primary: var(--font-sans);
+}
+
 /* Custom Hide Scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
