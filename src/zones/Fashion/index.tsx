@@ -5,8 +5,8 @@ const FASHION_ITEM = {
   name: "VORTEX",
   sub: "OG '98 RE-ISSUE",
   desc: "Bản phát hành giới hạn kết hợp cùng nghệ sĩ thị giác KAW. 100 đôi trên toàn cầu. Đừng chớp mắt.",
-  image1: "https://images.unsplash.com/photo-1552346154-21d32810baa3?q=80&w=2000&auto=format&fit=crop",
-  image2: "https://images.unsplash.com/photo-1595950653106-6c9ebd614c3a?q=80&w=1500&auto=format&fit=crop",
+  image1: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=2000&auto=format&fit=crop",
+  image2: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1500&auto=format&fit=crop",
   price: "12,000,000 VND"
 };
 
