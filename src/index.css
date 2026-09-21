@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-mono: "Fira Code", monospace;
+  --font-grotesk: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  :root {
+    --bg-color: #09090b; /* default tech bg */
+    --text-color: #f4f4f5; /* default tech fg */
+    --accent-color: #3b82f6; /* default tech accent */
+    --font-primary: var(--font-sans);
+  }
+}
+
+body {
+  @apply antialiased transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)];
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+}
+
+/* 1. Thương mại điện tử (Tech) */
+.theme-ecommerce {
+  --bg-color: #09090b; /* Zinc 950 */
+  --text-color: #f4f4f5; /* Zinc 50 */
+  --accent-color: #3b82f6; /* Blue 500 */
+  --font-primary: var(--font-sans);
+}
+
+/* 2. Thời trang (Hypebeast/Streetwear) */
+.theme-fashion {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --accent-color: #ff0033; /* Acid Red */
+  --font-primary: var(--font-grotesk);
+}
+
+/* 3. Shop Anime (Hobby/Figure) */
+.theme-anime {
+  --bg-color: #0a0514; /* Deep purple dark */
+  --text-color: #00ffcc; /* Cyber Cyan */
+  --accent-color: #ff00ff; /* Neon Pink */
+  --font-primary: var(--font-mono);
+}
+
+/* 4. Du lịch (Travel/OTA) */
+.theme-travel {
+  --bg-color: #fdfbf7; /* Off-white warm */
+  --text-color: #2d3748; /* Slate 800 */
+  --accent-color: #2f855a; /* Sage Green */
+  --font-primary: var(--font-sans);
+}
+
+/* 5. Media Tiệc cưới (Wedding) */
+.theme-wedding {
+  --bg-color: #f8f7f5; /* Porcelain */
+  --text-color: #1c1917; /* Stone 900 */
+  --accent-color: #d4af37; /* Gold */
+  --font-primary: var(--font-serif);
+}
+
+/* Custom Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Typography Utilities */
+.text-edge {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.85;
+}
