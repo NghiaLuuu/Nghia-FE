@@ -1,92 +1,102 @@
-import { motion } from 'framer-motion';
-import { MapPin, Calendar, Users, Star, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
-
-const DESTINATION = {
-  name: "Bvlgari Resort Bali",
-  location: "Uluwatu, Bali, Indonesia",
-  rating: 4.9,
-  reviews: 1284,
-  price: "24.500.000 VND",
-  image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop",
-  badges: ["Cam kết giá tốt nhất", "Hoàn hủy miễn phí 48h"]
-};
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { Compass, MapPin, Search } from 'lucide-react';
 
 export default function TravelZone() {
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({ 
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Zoom effect for the background image
+  const scaleImg = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const yText = useTransform(scrollYProgress, [0, 0.5], ["0%", "-50%"]);
+
   return (
-    <div className="w-full min-h-screen bg-[#fdfbf7] text-[#2d3748] relative">
+    <div ref={containerRef} className="h-[200vh] bg-black text-white relative selection:bg-white selection:text-black font-sans">
       
-      {/* Hero Image Section with Whitespace */}
-      <div className="absolute top-0 right-0 w-full lg:w-[65%] h-[60vh] lg:h-screen">
-        <motion.img 
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          src={DESTINATION.image} 
-          alt={DESTINATION.name} 
-          className="w-full h-full object-cover rounded-bl-[120px] shadow-2xl"
-        />
-      </div>
-
-      {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-[45vh] lg:pt-32 pb-24 h-full flex flex-col justify-center">
+      {/* Sticky Fullscreen Container */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
         
-        {/* Main Info Box */}
+        {/* Immersive Background */}
         <motion.div 
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-white/90 backdrop-blur-xl p-8 md:p-12 rounded-[40px] shadow-xl max-w-2xl border border-gray-100"
+          style={{ scale: scaleImg }}
+          className="absolute inset-0 w-full h-full origin-center"
         >
-          {/* Trust Badges */}
-          <div className="flex gap-3 mb-6 flex-wrap">
-            {DESTINATION.badges.map((badge, i) => (
-              <span key={i} className="flex items-center gap-1.5 text-xs font-semibold text-[#2f855a] bg-[#2f855a]/10 px-3 py-1.5 rounded-full">
-                {i === 0 ? <ShieldCheck size={14} /> : <CheckCircle2 size={14} />}
-                {badge}
-              </span>
-            ))}
-          </div>
-
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-gray-900">{DESTINATION.name}</h1>
-          
-          <div className="flex items-center gap-6 mb-8 text-sm text-gray-600">
-            <span className="flex items-center gap-2"><MapPin size={16} className="text-[#2f855a]"/> {DESTINATION.location}</span>
-            <span className="flex items-center gap-1 font-bold text-gray-900">
-              <Star size={16} fill="#F59E0B" className="text-amber-500" /> 
-              {DESTINATION.rating} <span className="font-normal text-gray-500">({DESTINATION.reviews} đánh giá thật)</span>
-            </span>
-          </div>
-
-          {/* Multi-variant Search / Booking Form */}
-          <div className="bg-gray-50 rounded-3xl p-2 flex flex-col md:flex-row gap-2 mb-8">
-            <div className="flex-1 bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
-              <Calendar className="text-gray-400" size={20} />
-              <div className="flex flex-col">
-                <span className="text-xs text-gray-500 font-medium">Nhận phòng - Trả phòng</span>
-                <span className="font-bold text-sm">12 thg 10 - 15 thg 10</span>
-              </div>
-            </div>
-            <div className="flex-1 bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
-              <Users className="text-gray-400" size={20} />
-              <div className="flex flex-col">
-                <span className="text-xs text-gray-500 font-medium">Khách & Phòng</span>
-                <span className="font-bold text-sm">2 người lớn, 1 phòng</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Price & Action */}
-          <div className="flex items-center justify-between mt-4">
-            <div>
-              <p className="text-sm text-gray-500">Giá mỗi đêm từ</p>
-              <p className="text-3xl font-black text-[#2f855a]">{DESTINATION.price}</p>
-            </div>
-            <button className="bg-[#2f855a] text-white h-14 px-8 rounded-full font-bold flex items-center gap-2 hover:bg-[#276749] transition-all hover:pr-6 group">
-              Đặt Ngay 
-              <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-            </button>
-          </div>
+          <img 
+            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2000&auto=format&fit=crop" 
+            alt="Travel Landscape" 
+            className="w-full h-full object-cover filter brightness-[0.7]" 
+          />
+          {/* Subtle gradient overlay to ensure text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
         </motion.div>
+
+        {/* Header */}
+        <div className="absolute top-8 left-8 right-8 z-50 flex items-center justify-between mix-blend-difference">
+          <div className="font-serif text-2xl font-bold tracking-widest uppercase">Nomad.</div>
+          <div className="flex gap-8 text-xs font-bold tracking-[0.2em] uppercase">
+            <span className="hover:line-through cursor-pointer">Destinations</span>
+            <span className="hover:line-through cursor-pointer">Journeys</span>
+            <span className="hover:line-through cursor-pointer">Journal</span>
+          </div>
+          <button className="w-12 h-12 rounded-full border border-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+            <Search size={16} />
+          </button>
+        </div>
+
+        {/* Central Masking Typography */}
+        <motion.div 
+          style={{ opacity: opacityText, y: yText }}
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 mix-blend-overlay"
+        >
+          <h1 className="text-[15vw] font-serif font-black tracking-tighter uppercase leading-[0.8] text-white/90">
+            DISCOVER
+          </h1>
+          <h1 className="text-[15vw] font-serif font-black tracking-tighter uppercase leading-[0.8] text-transparent stroke-white" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.5)' }}>
+            THE WILD
+          </h1>
+        </motion.div>
+
+        {/* Glassmorphism Search/Booking Widget */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[90%] max-w-4xl z-40">
+          <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full p-4 flex items-center justify-between shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
+            
+            <div className="flex-1 flex items-center gap-4 px-6 border-r border-white/20">
+              <MapPin size={24} className="text-white/50" />
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Location</span>
+                <input type="text" placeholder="Where to?" className="bg-transparent text-white placeholder-white/80 font-serif text-xl outline-none" />
+              </div>
+            </div>
+
+            <div className="flex-1 flex items-center gap-4 px-6 border-r border-white/20">
+              <Compass size={24} className="text-white/50" />
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Experience</span>
+                <select className="bg-transparent text-white font-serif text-xl outline-none appearance-none cursor-pointer">
+                  <option className="text-black">Adventure</option>
+                  <option className="text-black">Relaxation</option>
+                  <option className="text-black">Culture</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="px-4">
+              <button className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+                Explore
+              </button>
+            </div>
+
+          </div>
+          
+          <div className="text-center mt-6 text-[10px] uppercase tracking-[0.3em] text-white/50 font-bold">
+            Scroll to zoom into the world
+          </div>
+        </div>
 
       </div>
     </div>

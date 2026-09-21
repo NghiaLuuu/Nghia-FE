@@ -1,126 +1,136 @@
-import { Music, Navigation, Wind, Settings } from 'lucide-react';
-
-const SegmentedBattery = ({ percentage }: { percentage: number }) => {
-  const segments = 10;
-  const activeSegments = Math.round((percentage / 100) * segments);
-
-  return (
-    <div className="flex gap-1 h-8">
-      {Array.from({ length: segments }).map((_, i) => (
-        <div 
-          key={i} 
-          className={`w-6 h-full skew-x-[-15deg] ${
-            i < activeSegments 
-              ? 'bg-[#f97316]' 
-              : 'bg-[#222]'
-          }`}
-        />
-      ))}
-    </div>
-  );
-};
+import { motion } from 'framer-motion';
+import { Fan, Navigation, Music, Phone, Settings, Wind } from 'lucide-react';
+import { useState } from 'react';
 
 export default function IviZone() {
+  const [acOn, setAcOn] = useState(true);
+  const [temp, setTemp] = useState(22);
+  const [activeTab, setActiveTab] = useState('climate'); // climate, nav, media
+
   return (
-    <div className="h-screen w-full bg-[#000] text-white font-sans overflow-hidden relative selection:bg-transparent">
+    <div className="w-full h-screen bg-[#000000] text-white font-sans overflow-hidden relative select-none">
       
-      {/* Background Map - Solid, No blur tricks, high contrast */}
-      <div className="absolute inset-0 z-0 opacity-30 mix-blend-luminosity">
-        <img 
-          src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop" 
-          alt="Map" 
-          className="w-full h-full object-cover filter contrast-125 grayscale"
-        />
-        {/* Navigation Route - Solid sharp line, NO GLOW */}
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 border-l-[6px] border-t-[6px] border-[#f97316] rounded-tl-[100px]"></div>
-        <div className="absolute top-1/2 left-1/2 -mt-4 -ml-4 w-8 h-8 bg-[#f97316] rounded-full flex items-center justify-center">
-          <Navigation size={16} className="text-black" />
-        </div>
-      </div>
+      {/* Ambient Lighting Background */}
+      <motion.div 
+        animate={{ opacity: acOn ? 1 : 0.3, backgroundColor: temp < 20 ? '#0ea5e9' : temp > 25 ? '#ef4444' : '#8b5cf6' }}
+        transition={{ duration: 1 }}
+        className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[50%] blur-[120px] rounded-full opacity-50 pointer-events-none"
+      />
 
-      {/* Main UI Layout - Solid panels, edge-to-edge spacing */}
-      <div className="relative z-10 w-full h-full p-6 md:p-12 flex flex-col justify-between pointer-events-none">
+      <div className="relative z-10 w-full h-full flex flex-col">
         
-        {/* Top Status Bar - Matte Panels */}
-        <div className="flex justify-between items-start gap-8">
-          {/* Battery Panel */}
-          <div className="bg-[#111] border border-white/5 p-6 flex items-center gap-8 pointer-events-auto shadow-2xl">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-end justify-between">
-                <span className="text-4xl font-black font-mono tabular-nums tracking-tighter text-[#f97316]">84%</span>
-                <span className="text-gray-500 font-mono text-lg uppercase tracking-widest">420 KM</span>
-              </div>
-              <SegmentedBattery percentage={84} />
-            </div>
+        {/* Top Status Bar */}
+        <div className="h-16 px-8 flex items-center justify-between text-[#a1a1aa] font-medium text-lg">
+          <div className="flex items-center gap-6">
+            <span className="text-white font-bold">14:24</span>
+            <span className="flex items-center gap-2"><div className="w-3 h-3 bg-green-500 rounded-full"></div> 5G</span>
           </div>
-          
-          {/* Time Panel */}
-          <div className="bg-[#111] border border-white/5 px-8 py-6 pointer-events-auto flex items-end gap-6 shadow-2xl">
-            <span className="text-6xl font-black font-mono tabular-nums tracking-tighter leading-none">14:05</span>
-            <span className="text-gray-500 font-mono text-xl uppercase tracking-widest mb-1">22°C EXT</span>
+          <div className="flex items-center gap-6">
+            <span>Outside: 28°C</span>
+            <span>Profile: John D.</span>
           </div>
         </div>
 
-        {/* Bottom Controls - Massive targets, brutalist shapes */}
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch md:items-end">
+        {/* Main Content Area */}
+        <div className="flex-1 flex px-8 pb-8 gap-8">
           
-          {/* Media Player */}
-          <div className="flex-1 md:max-w-[600px] bg-[#111] border border-white/5 p-8 pointer-events-auto shadow-2xl">
-            <div className="flex items-center gap-4 mb-6 border-b border-white/10 pb-4">
-              <Music size={24} className="text-[#f97316]" />
-              <div className="text-gray-500 font-bold tracking-[0.2em] uppercase text-sm">Now Playing</div>
+          {/* Left Vertical Dock (Massive Touch Targets) */}
+          <div className="w-24 bg-white/5 backdrop-blur-2xl rounded-3xl flex flex-col items-center justify-center gap-8 py-8 border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+            <button onClick={() => setActiveTab('nav')} className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${activeTab === 'nav' ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.5)]' : 'text-white/50 hover:bg-white/10'}`}>
+              <Navigation size={28} />
+            </button>
+            <button onClick={() => setActiveTab('media')} className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${activeTab === 'media' ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.5)]' : 'text-white/50 hover:bg-white/10'}`}>
+              <Music size={28} />
+            </button>
+            <button onClick={() => setActiveTab('climate')} className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${activeTab === 'climate' ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.5)]' : 'text-white/50 hover:bg-white/10'}`}>
+              <Fan size={28} />
+            </button>
+            <button className="w-16 h-16 rounded-full flex items-center justify-center text-white/50 hover:bg-white/10 transition-all mt-auto">
+              <Phone size={28} />
+            </button>
+            <button className="w-16 h-16 rounded-full flex items-center justify-center text-white/50 hover:bg-white/10 transition-all">
+              <Settings size={28} />
+            </button>
+          </div>
+
+          {/* Center Stage (3D Car Render placeholder + Controls) */}
+          <div className="flex-1 relative bg-gradient-to-b from-white/[0.02] to-transparent rounded-[40px] border border-white/5 flex items-center justify-center overflow-hidden">
+            
+            {/* 3D Car Render Placeholder */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
+              <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=1500&auto=format&fit=crop" alt="Car 3D" className="w-[80%] object-contain filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] mix-blend-screen" />
             </div>
-            
-            <h2 className="text-3xl md:text-5xl font-black leading-tight mb-2 truncate">SYMPHONY NO. 9</h2>
-            <p className="text-xl text-gray-400 font-mono uppercase tracking-widest mb-12">Beethoven</p>
-            
-            {/* Playback Controls - Geometric & Massive */}
-            <div className="flex items-center gap-4">
-              <button className="flex-1 h-24 bg-[#1a1a1a] hover:bg-[#222] flex items-center justify-center transition-colors border-none outline-none group">
-                <div className="w-0 h-0 border-t-[12px] border-t-transparent border-r-[20px] border-r-gray-400 group-hover:border-r-white border-b-[12px] border-b-transparent transition-colors"></div>
-              </button>
-              
-              <button className="flex-[1.5] h-24 bg-[#f97316] hover:bg-[#ea580c] flex items-center justify-center transition-colors border-none outline-none">
-                <div className="flex gap-2">
-                  <div className="w-4 h-10 bg-black"></div>
-                  <div className="w-4 h-10 bg-black"></div>
+
+            {/* Climate Controls Overlay (Glassmorphism) */}
+            {activeTab === 'climate' && (
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute bottom-12 w-[90%] max-w-4xl bg-black/40 backdrop-blur-3xl rounded-[40px] p-8 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-between"
+              >
+                
+                {/* Temp Down */}
+                <div className="flex flex-col items-center gap-4">
+                  <button 
+                    onClick={() => setTemp(t => Math.max(16, t - 0.5))}
+                    className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-3xl font-light hover:bg-white/20 active:bg-white/30 transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="text-[#a1a1aa] font-medium tracking-widest uppercase text-sm">Cooler</span>
                 </div>
-              </button>
-              
-              <button className="flex-1 h-24 bg-[#1a1a1a] hover:bg-[#222] flex items-center justify-center transition-colors border-none outline-none group">
-                <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-gray-400 group-hover:border-l-white border-b-[12px] border-b-transparent transition-colors"></div>
-              </button>
-            </div>
-          </div>
 
-          {/* Climate Controls */}
-          <div className="flex-[1.5] bg-[#111] border border-white/5 p-8 flex justify-between items-center pointer-events-auto shadow-2xl">
-            <button className="w-32 h-32 bg-[#1a1a1a] hover:bg-[#222] flex items-center justify-center transition-colors border-none outline-none">
-              <span className="text-6xl font-light text-gray-400 leading-none mb-2">-</span>
-            </button>
-            
-            <div className="flex flex-col items-center justify-center gap-4">
-              <div className="flex items-center gap-3 border border-white/10 px-4 py-2 rounded-full">
-                <Wind size={16} className="text-cyan-400" />
-                <span className="text-xs uppercase font-bold tracking-[0.2em] text-cyan-400">AUTO</span>
+                {/* Central Display */}
+                <div className="flex flex-col items-center justify-center">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-8xl font-light tracking-tighter tabular-nums">{temp.toFixed(1)}</span>
+                    <span className="text-3xl text-[#a1a1aa]">°C</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      onClick={() => setAcOn(!acOn)}
+                      className={`px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm transition-colors ${acOn ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+                    >
+                      A/C {acOn ? 'ON' : 'OFF'}
+                    </button>
+                    <button className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20">
+                      <Wind size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Temp Up */}
+                <div className="flex flex-col items-center gap-4">
+                  <button 
+                    onClick={() => setTemp(t => Math.min(30, t + 0.5))}
+                    className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-3xl font-light hover:bg-white/20 active:bg-white/30 transition-colors"
+                  >
+                    +
+                  </button>
+                  <span className="text-[#a1a1aa] font-medium tracking-widest uppercase text-sm">Warmer</span>
+                </div>
+
+              </motion.div>
+            )}
+
+            {/* Top Right Widget: Media Mini */}
+            <div className="absolute top-12 right-12 bg-black/40 backdrop-blur-2xl rounded-3xl p-6 border border-white/10 shadow-2xl flex items-center gap-6 w-96">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-inner">
+                <Music size={32} className="text-white/50" />
               </div>
-              <div className="text-7xl md:text-8xl font-black font-mono tabular-nums tracking-tighter">
-                21<span className="text-5xl text-gray-600">°</span>
+              <div className="flex-1">
+                <h4 className="font-bold text-lg truncate">Nightcall</h4>
+                <p className="text-[#a1a1aa] text-sm truncate">Kavinsky</p>
+                <div className="w-full h-1 bg-white/20 rounded-full mt-4">
+                  <div className="w-1/3 h-full bg-white rounded-full"></div>
+                </div>
               </div>
             </div>
-            
-            <button className="w-32 h-32 bg-[#1a1a1a] hover:bg-[#222] flex items-center justify-center transition-colors border-none outline-none">
-              <span className="text-6xl font-light text-[#f97316] leading-none mb-2">+</span>
-            </button>
+
           </div>
-
-          {/* Quick Settings Action */}
-          <button className="w-[120px] bg-[#111] border border-white/5 hover:bg-[#1a1a1a] flex flex-col items-center justify-center gap-4 pointer-events-auto transition-colors outline-none shadow-2xl">
-            <Settings size={32} className="text-gray-500" />
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 [writing-mode:vertical-lr]">Settings</span>
-          </button>
-
+          
         </div>
+
       </div>
     </div>
   );

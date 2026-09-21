@@ -1,157 +1,150 @@
-import { motion, animate, useInView } from 'framer-motion';
-import { useRef, useEffect } from 'react';
-import { CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Star, Trophy, Target, Sparkles, BookOpen, Mic, Headphones } from 'lucide-react';
 
-function CountUp({ value, decimals = 1, prefix = "", suffix = "" }: { value: number, decimals?: number, prefix?: string, suffix?: string }) {
-  const nodeRef = useRef<HTMLSpanElement>(null);
-  const inView = useInView(nodeRef, { once: true, margin: "-100px" });
-
-  useEffect(() => {
-    if (inView && nodeRef.current) {
-      animate(0, value, {
-        duration: 2,
-        ease: [0.16, 1, 0.3, 1], // Custom easeOut
-        onUpdate: (latest) => {
-          if (nodeRef.current) {
-            nodeRef.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
-          }
-        }
-      });
-    }
-  }, [inView, value, decimals, prefix, suffix]);
-
-  return <span ref={nodeRef}>{prefix}{(0).toFixed(decimals)}{suffix}</span>;
-}
+const MODULES = [
+  { id: 1, title: "Basic Greetings", icon: Mic, color: "from-sky-300 to-blue-500", shadow: "shadow-blue-500/50", progress: 100 },
+  { id: 2, title: "Ordering Food", icon: BookOpen, color: "from-amber-300 to-orange-500", shadow: "shadow-orange-500/50", progress: 65 },
+  { id: 3, title: "Travel & Directions", icon: Headphones, color: "from-emerald-300 to-teal-500", shadow: "shadow-teal-500/50", progress: 0 },
+];
 
 export default function EnglishZone() {
   return (
-    <div className="min-h-screen bg-white text-[var(--text-color)] font-sans selection:bg-[var(--cta-color)] selection:text-white pb-24">
+    <div className="min-h-screen bg-[#f0f5fa] font-sans relative overflow-hidden text-slate-800 selection:bg-indigo-500 selection:text-white">
       
-      {/* Hero Section - Asymmetric Layout */}
-      <div className="pt-32 px-4 md:px-12 max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center min-h-[80vh]">
+      {/* Playful Floating Background Shapes (3D Neumorphism vibe) */}
+      <motion.div 
+        animate={{ y: [0, -30, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-10 -left-10 w-64 h-64 bg-gradient-to-tr from-pink-300 to-purple-400 rounded-[40%_60%_70%_30%] blur-2xl opacity-60 mix-blend-multiply"
+      />
+      <motion.div 
+        animate={{ y: [0, 40, 0], x: [0, -20, 0], rotate: [0, -15, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-40 right-[-5%] w-96 h-96 bg-gradient-to-bl from-cyan-300 to-blue-500 rounded-[60%_40%_30%_70%] blur-[80px] opacity-50 mix-blend-multiply pointer-events-none"
+      />
+
+      <div className="max-w-6xl mx-auto px-6 py-12 md:py-24 relative z-10">
         
-        {/* Left Col - Typography Heavy */}
-        <div className="col-span-1 md:col-span-8 flex flex-col items-start z-10 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-none mb-8">
-              <ShieldCheck size={18} className="text-[var(--text-color)]" />
-              <span className="font-bold text-sm uppercase tracking-widest text-[var(--text-color)]">
-                IELTS Intensive Bootcamp 7.5+ (Cam kết đầu ra bằng văn bản pháp lý)
-              </span>
+        {/* Header / Gamified Profile */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16 bg-white/70 backdrop-blur-xl p-8 rounded-[40px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-white">
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-1">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Avatar" className="w-full h-full object-cover rounded-full border-4 border-white" />
+              </div>
+              <motion.div 
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                className="absolute -bottom-2 -right-2 w-10 h-10 bg-amber-400 rounded-full border-4 border-white flex items-center justify-center shadow-lg cursor-pointer"
+              >
+                <Trophy size={16} className="text-white" />
+              </motion.div>
             </div>
-
-            {/* Giant Headline */}
-            <h1 className="text-[14vw] md:text-[7vw] font-black leading-[0.9] tracking-tighter uppercase mb-10 text-[var(--text-color)]">
-              BỨT PHÁ BĂNG ĐIỂM.<br />
-              KHÔNG HỌC MẸO,<br />
-              <span className="text-gray-300">HỌC TƯ DUY.</span>
-            </h1>
-
-            {/* Primary Action */}
-            <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
-              <button className="w-full sm:w-auto bg-[var(--cta-color)] text-white px-10 py-5 uppercase font-black text-xl tracking-wider hover:scale-105 active:scale-95 transition-transform duration-300 flex items-center justify-center gap-3 border-none outline-none">
-                ĐẶT LỊCH TEST ĐẦU VÀO <ArrowRight size={24} />
-              </button>
-              <span className="font-medium text-gray-500 uppercase tracking-widest text-sm flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Còn 3 suất trống tuần này
-              </span>
+            <div>
+              <h1 className="text-3xl font-black text-slate-800 tracking-tight">Level 12 Explorer</h1>
+              <p className="text-slate-500 font-medium">Keep it up! 450 XP to Next Level</p>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Fluid Progress Bar */}
+          <div className="w-full md:w-1/3">
+            <div className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+              <span>Current Progress</span>
+              <span className="text-indigo-500">65%</span>
+            </div>
+            <div className="h-6 w-full bg-indigo-100 rounded-full overflow-hidden p-1 shadow-inner relative">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "65%" }}
+                transition={{ duration: 1.5, type: "spring", bounce: 0.4 }}
+                className="h-full bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full relative overflow-hidden"
+              >
+                {/* Fluid shine effect inside progress bar */}
+                <motion.div 
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
+                />
+              </motion.div>
+            </div>
+          </div>
         </div>
 
-        {/* Right Col - Visual Anchor (Abstract/Clean) */}
-        <div className="col-span-1 md:col-span-4 h-full hidden md:flex items-center justify-center relative">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="w-full aspect-square bg-gray-50 flex items-center justify-center relative border border-gray-100 overflow-hidden"
-          >
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-            <div className="text-[30vw] md:text-[20vw] font-black leading-none tracking-tighter text-gray-100 mix-blend-multiply absolute -right-10 -bottom-10">
-              9.0
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Social Proof Section - Asymmetric Bento Grid */}
-      <div className="px-4 md:px-12 max-w-[1920px] mx-auto mt-24">
-        
-        <div className="mb-12">
-          <h2 className="text-3xl font-black uppercase tracking-widest text-[var(--text-color)]">Kết quả thực chứng</h2>
-          <div className="w-24 h-1 bg-[var(--cta-color)] mt-4"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]">
+        {/* Learning Path - Interactive Badges & Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           
-          {/* Main Bento Box - Overall Score */}
-          <div className="md:col-span-7 md:row-span-2 bg-[var(--accent-color)] text-white p-8 md:p-12 flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-2xl font-bold uppercase tracking-widest mb-1">Trần Nguyễn Phương Anh</h3>
-                <p className="text-gray-400 font-medium">Khóa Bootcamp K42 - Lộ trình 8 tuần</p>
-              </div>
-              <div className="px-4 py-2 bg-white/20 text-white text-sm font-bold uppercase tracking-widest border border-white/10">
-                Đã đạt mục tiêu
-              </div>
-            </div>
+          {/* Connector Line */}
+          <div className="hidden md:block absolute top-1/2 left-10 right-10 h-2 bg-white rounded-full z-0 shadow-inner">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: "66%" }}
+              transition={{ duration: 1.5, delay: 0.5 }}
+              className="h-full bg-gradient-to-r from-indigo-400 to-amber-400 rounded-full"
+            />
+          </div>
 
-            <div className="mt-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
-              <div>
-                <p className="text-gray-400 font-bold uppercase tracking-widest mb-2 text-sm">Điểm Overall</p>
-                <div className="text-[15vw] md:text-[10vw] font-black leading-none tracking-tighter text-[var(--cta-color)]">
-                  <CountUp value={8.5} />
+          {MODULES.map((mod, idx) => {
+            const Icon = mod.icon;
+            const isLocked = mod.progress === 0;
+            const isCompleted = mod.progress === 100;
+
+            return (
+              <motion.div 
+                key={mod.id}
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: idx * 0.2, type: "spring", bounce: 0.5 }}
+                whileHover={!isLocked ? { y: -10, scale: 1.05 } : {}}
+                className={`relative z-10 flex flex-col items-center cursor-pointer ${isLocked ? 'grayscale opacity-70' : ''}`}
+              >
+                {/* Floating Badge (3D feeling) */}
+                <div className="relative group perspective-1000 mb-6">
+                  <motion.div 
+                    animate={isCompleted ? { y: [0, -10, 0] } : {}}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: idx }}
+                    className={`w-32 h-32 rounded-[30px] bg-gradient-to-br ${mod.color} p-1 shadow-2xl ${mod.shadow} group-hover:rotate-y-12 transition-transform duration-500 transform-style-3d`}
+                  >
+                    <div className="w-full h-full bg-white/20 backdrop-blur-sm rounded-[26px] border border-white/50 flex flex-col items-center justify-center gap-2 transform translate-z-12">
+                      <Icon size={40} className="text-white drop-shadow-md" />
+                      {isCompleted && (
+                        <div className="absolute -top-3 -right-3 w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center shadow-lg border-2 border-white transform rotate-12">
+                          <Star size={16} className="text-white" fill="currentColor" />
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-              
-              <div className="mb-4 md:mb-8 border-l border-white/20 pl-6">
-                <p className="text-2xl font-bold leading-tight max-w-sm">
-                  "Tăng <CountUp value={2.0} prefix="+" /> band chỉ sau 8 tuần. Không học vẹt, tư duy phản biện được rèn giũa sắc bén."
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Skill Bento 1 - Reading */}
-          <div className="md:col-span-5 bg-gray-50 border border-gray-100 p-8 flex flex-col justify-between group">
-            <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">Kỹ năng Reading</p>
-            <div className="flex items-end justify-between mt-4">
-              <div className="text-[10vw] md:text-[6vw] font-black leading-none tracking-tighter text-[var(--text-color)] group-hover:scale-105 transition-transform origin-bottom-left">
-                <CountUp value={9.0} />
-              </div>
-              <CheckCircle2 size={32} className="text-[var(--text-color)] mb-2 md:mb-4" />
-            </div>
-          </div>
+                {/* Card Info */}
+                <div className="bg-white p-6 rounded-3xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] w-full text-center border border-slate-100 relative overflow-hidden group">
+                  <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-indigo-600 transition-colors">{mod.title}</h3>
+                  <div className="text-sm font-semibold text-slate-500 mb-4">Unit {mod.id}</div>
+                  
+                  {isCompleted ? (
+                    <div className="w-full py-3 bg-green-100 text-green-700 font-bold rounded-2xl flex items-center justify-center gap-2">
+                      <Target size={18} /> MASTERED
+                    </div>
+                  ) : isLocked ? (
+                    <div className="w-full py-3 bg-slate-100 text-slate-500 font-bold rounded-2xl flex items-center justify-center gap-2">
+                      LOCKED
+                    </div>
+                  ) : (
+                    <button className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2 active:scale-95">
+                      <Sparkles size={18} /> CONTINUE
+                    </button>
+                  )}
 
-          {/* Skill Bento 2 & 3 - Listening & Speaking */}
-          <div className="md:col-span-2 md:row-span-1 bg-gray-50 border border-gray-100 p-6 flex flex-col justify-between">
-            <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Listening</p>
-            <div className="text-5xl font-black tracking-tighter text-[var(--text-color)] mt-4">
-              <CountUp value={8.5} />
-            </div>
-          </div>
-
-          <div className="md:col-span-3 md:row-span-1 bg-gray-50 border border-gray-100 p-6 flex flex-col justify-between">
-            <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Speaking & Writing</p>
-            <div className="flex items-center gap-4 mt-4">
-              <div className="text-5xl font-black tracking-tighter text-[var(--text-color)]">
-                <CountUp value={8.0} />
-              </div>
-              <span className="text-gray-300 font-light text-4xl">/</span>
-              <div className="text-5xl font-black tracking-tighter text-[var(--text-color)]">
-                <CountUp value={8.0} />
-              </div>
-            </div>
-          </div>
-
+                  {/* Micro-interaction ring on hover */}
+                  {!isLocked && (
+                    <div className="absolute inset-0 border-2 border-indigo-400 rounded-3xl scale-105 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 pointer-events-none"></div>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
+
       </div>
-      
     </div>
   );
 }

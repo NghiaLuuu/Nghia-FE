@@ -1,96 +1,117 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 
-const FASHION_ITEM = {
-  name: "VORTEX",
-  sub: "OG '98 RE-ISSUE",
-  desc: "Bản phát hành giới hạn kết hợp cùng nghệ sĩ thị giác KAW. 100 đôi trên toàn cầu. Đừng chớp mắt.",
-  image1: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=2000&auto=format&fit=crop",
-  image2: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1500&auto=format&fit=crop",
-  price: "12,000,000 VND"
-};
+const IMAGES = [
+  "https://images.unsplash.com/photo-1550614000-4b95d4ebf32b?q=80&w=1500&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1549439602-43ebca2327af?q=80&w=1500&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1500&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1500&auto=format&fit=crop",
+];
+
+const TEXTS = [
+  { title: "AVANT", subtitle: "SS_26_C1" },
+  { title: "GARDE", subtitle: "NOISE_SYS" },
+  { title: "VOID", subtitle: "NULL_PTR" },
+  { title: "FORM", subtitle: "RAW_DATA" },
+];
 
 export default function FashionZone() {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
   
-  // Parallax effects
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  // Track scroll position for the entire container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
+  // Smooth out the scroll value
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 1 });
+
+  // Left column goes UP (normal scroll direction, but translated via fixed position)
+  const leftY = useTransform(smoothProgress, [0, 1], ["0%", "-75%"]);
+  // Right column goes DOWN (reverse scroll direction)
+  const rightY = useTransform(smoothProgress, [0, 1], ["-75%", "0%"]);
 
   return (
-    <div ref={containerRef} className="w-full min-h-[150vh] bg-black text-white overflow-hidden relative">
+    // 400vh gives enough space to scroll through 4 panels
+    <div ref={containerRef} className="h-[400vh] bg-[#dedede] relative selection:bg-black selection:text-white">
       
-      {/* Background Typography */}
-      <div className="absolute top-20 left-0 w-full overflow-hidden pointer-events-none opacity-20">
-        <motion.h1 
-          initial={{ x: "100%" }}
-          animate={{ x: "-100%" }}
-          transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-          className="text-[25vw] font-black text-edge whitespace-nowrap text-transparent"
-          style={{ WebkitTextStroke: '2px white' }}
-        >
-          HYPEBEAST HYPEBEAST HYPEBEAST
-        </motion.h1>
-      </div>
-
-      <div className="pt-32 pb-24 px-4 md:px-12 max-w-[1920px] mx-auto relative grid grid-cols-1 md:grid-cols-12 grid-rows-[1fr_auto] min-h-screen gap-y-12">
+      {/* Sticky container that holds the split screen layout */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex">
         
-        {/* Lớp Typography (Nằm dưới - DOM Order 1 - Row 1) */}
-        <div className="md:row-start-1 md:col-start-1 md:col-span-8 flex flex-col justify-start relative">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Title */}
-            <p className="text-[var(--accent-color)] font-bold tracking-[0.2em] mb-2 uppercase">{FASHION_ITEM.sub}</p>
-            <h1 className="font-black text-[25vw] md:text-[14vw] leading-[0.8] mb-8 md:mb-12 uppercase tracking-tighter mix-blend-difference">{FASHION_ITEM.name}</h1>
-            
-            {/* Description */}
-            <div className="max-w-md pl-2">
-              <p className="text-xl font-light leading-relaxed text-gray-300">{FASHION_ITEM.desc}</p>
-            </div>
-          </motion.div>
+        {/* Absolute Center Typography - Brutalist over everything */}
+        <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center mix-blend-difference">
+          <h1 className="text-[12vw] font-black tracking-tighter text-white uppercase text-center leading-[0.8] scale-y-125">
+            CULTURE<br/>
+            <span className="italic font-light">CLASH</span>
+          </h1>
         </div>
 
-        {/* Lớp Hình Ảnh (Nằm giữa - DOM Order 2, đè lên Typography - Span 2 rows) */}
-        <div className="md:row-start-1 md:row-span-2 md:col-start-6 md:col-span-7 relative flex items-center justify-center pointer-events-none mix-blend-lighten">
-          <motion.div 
-            style={{ y: y1 }}
-            className="w-full h-full flex items-center justify-center scale-125 md:scale-150 origin-center"
-          >
-            <img 
-              src={FASHION_ITEM.image1} 
-              alt="Main Product" 
-              className="w-full h-auto max-h-[80vh] object-contain filter contrast-125 saturate-0 hover:saturate-100 transition-all duration-700 pointer-events-auto"
-            />
-          </motion.div>
+        {/* Global Header */}
+        <div className="absolute top-8 left-8 z-40 text-black mix-blend-difference font-bold uppercase tracking-[0.2em] text-xs">
+          <span className="text-white">DISTRICT 9 / YOUTH</span>
         </div>
-
-        {/* Lớp Hành Động (Nằm trên cùng - DOM Order 3 - Row 2) */}
-        <div className="md:row-start-2 md:col-start-1 md:col-span-5 relative flex flex-col items-start gap-4">
-          <span className="font-sans text-[12vw] md:text-[4vw] font-black leading-none tracking-tight text-white drop-shadow-md">{FASHION_ITEM.price}</span>
-          <button className="bg-[var(--accent-color)] text-white px-12 py-6 uppercase font-black text-3xl md:text-4xl tracking-widest hover:bg-white hover:text-black transition-colors duration-300 border-none outline-none">
-            COP NOW
+        <div className="absolute top-8 right-8 z-40">
+          <button className="bg-black text-white px-6 py-3 font-bold text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-black hover:border-black border border-transparent transition-all">
+            Enter Store
           </button>
         </div>
 
-      </div>
-
-      {/* Marquee Footer */}
-      <div className="fixed bottom-0 left-0 w-full bg-[var(--accent-color)] text-black font-black text-2xl py-3 uppercase tracking-widest overflow-hidden pointer-events-none z-50">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-          className="whitespace-nowrap flex gap-8"
+        {/* LEFT COLUMN: Scrolls normally (upwards) */}
+        <motion.div 
+          style={{ y: leftY }} 
+          className="w-1/2 h-[400vh] flex flex-col will-change-transform z-10"
         >
-          <span>OUT NOW</span><span>/</span><span>LIMITED STOCK</span><span>/</span><span>NO RESTOCK</span><span>/</span>
-          <span>OUT NOW</span><span>/</span><span>LIMITED STOCK</span><span>/</span><span>NO RESTOCK</span><span>/</span>
-          <span>OUT NOW</span><span>/</span><span>LIMITED STOCK</span><span>/</span><span>NO RESTOCK</span><span>/</span>
-        </motion.div>
-      </div>
+          {TEXTS.map((text, i) => (
+            <div key={`left-${i}`} className="h-screen w-full flex items-center justify-center p-12 relative overflow-hidden group">
+              {/* Background solid */}
+              <div className="absolute inset-0 bg-[#dedede] z-0"></div>
+              
+              <div className="relative z-10 w-full h-full flex flex-col justify-between pt-24 pb-12">
+                <div className="text-[10px] font-mono tracking-[0.5em] text-gray-500 uppercase">
+                  {text.subtitle} / 0{i + 1}
+                </div>
+                
+                <h2 className="text-[8vw] font-black uppercase tracking-tighter leading-none text-black">
+                  {text.title}
+                </h2>
+                
+                <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest cursor-pointer group/btn">
+                  Explore <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white transform group-hover/btn:scale-125 transition-transform"><ArrowUpRight size={20} /></div>
+                </div>
+              </div>
 
+              {/* Noise overlay */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* RIGHT COLUMN: Scrolls in reverse (downwards) */}
+        <motion.div 
+          style={{ y: rightY }} 
+          className="w-1/2 h-[400vh] flex flex-col will-change-transform z-20"
+        >
+          {IMAGES.slice().reverse().map((img, i) => (
+            <div key={`right-${i}`} className="h-screen w-full p-4 md:p-12 relative overflow-hidden group">
+              <div className="w-full h-full relative overflow-hidden">
+                {/* Reveal mask on hover */}
+                <div className="absolute inset-0 bg-black/20 z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-700"></div>
+                
+                <motion.img 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  src={img} 
+                  alt="Fashion Look" 
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 contrast-125 transition-all duration-700" 
+                />
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+      </div>
     </div>
   );
 }

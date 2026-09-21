@@ -1,99 +1,143 @@
-import { motion } from 'framer-motion';
-import { Cpu, Battery, Wifi, ShieldCheck, ChevronRight, ShoppingCart } from 'lucide-react';
+import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { ShoppingBag, Star, Check } from 'lucide-react';
+import { useRef, useState } from 'react';
 
-const TECH_PRODUCT = {
-  name: "TITAN QUANTUM X9",
-  tagline: "VƯỢT LÊN MỌI GIỚI HẠN VẬT LÝ",
-  price: "42.990.000",
-  originalPrice: "48.000.000",
-  image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=2940&auto=format&fit=crop",
-  specs: [
-    { icon: Cpu, label: "Chipset", value: "Neural Core V9" },
-    { icon: Battery, label: "Thời lượng", value: "140 Giờ Liên tục" },
-    { icon: Wifi, label: "Kết nối", value: "Quantum 7G" },
-    { icon: ShieldCheck, label: "Bảo mật", value: "Quét Sinh Trắc Nano" }
-  ]
+const PRODUCT = {
+  name: "AIR MAX SYMPHONY",
+  tagline: "GRAVITY DEFIED.",
+  price: "$295",
+  desc: "The next generation of air technology. A seamless blend of brutalist aesthetic and weightless comfort. Constructed with aerospace-grade monofilament mesh.",
+  image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2000&auto=format&fit=crop", // Red Nike shoe
+  sizes: [7, 8, 9, 10, 11, 12],
+  features: ["Aero-mesh upper", "Quantum air unit", "Carbon fiber plate"]
 };
 
 export default function ECommerceZone() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef });
+  
+  const [selectedSize, setSelectedSize] = useState(9);
+  const [isAdded, setIsAdded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    const x = (clientX - left - width / 2) / 20;
+    const y = (clientY - top - height / 2) / 20;
+    setMousePosition({ x, y });
+  };
+
+  const handleAdd = () => {
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000);
+  };
+
+  // Parallax Values
+  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  
+  const transformStyle = useMotionTemplate`perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale3d(1.05, 1.05, 1.05)`;
+
   return (
-    <div className="w-full min-h-full p-6 md:p-12 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 pt-20">
+    <div 
+      ref={containerRef} 
+      className="min-h-[150vh] bg-[#f0f0f0] text-[#111] font-sans selection:bg-[#ff4500] selection:text-white"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
+    >
       
-      {/* Left Column: Image & Effects */}
-      <motion.div 
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="w-full md:w-1/2 relative group"
-      >
-        <div className="absolute inset-0 bg-[var(--accent-color)] opacity-20 blur-[100px] rounded-full transition-opacity group-hover:opacity-40"></div>
-        <img 
-          src={TECH_PRODUCT.image} 
-          alt={TECH_PRODUCT.name} 
-          className="relative z-10 w-full h-auto object-cover rounded-3xl mix-blend-luminosity hover:mix-blend-normal transition-all duration-700 border border-[var(--text-color)]/10"
-        />
-        {/* Floating Spec Badge */}
-        <div className="absolute bottom-6 left-6 z-20 backdrop-blur-xl bg-black/50 border border-white/10 p-4 rounded-2xl flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full border border-[var(--accent-color)] flex items-center justify-center text-[var(--accent-color)] shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-            <Cpu size={24} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-400 font-medium">Vi xử lý đa luồng</p>
-            <p className="text-white font-bold font-mono">1.2 Trillion OPS</p>
-          </div>
-        </div>
-      </motion.div>
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+        {/* Massive Background Typography Parallax */}
+        <motion.div style={{ y: yText }} className="text-[25vw] font-black tracking-tighter text-[#e5e5e5] whitespace-nowrap leading-none select-none">
+          DEFY GRAVITY
+        </motion.div>
+      </div>
 
-      {/* Right Column: Information & Actions */}
-      <motion.div 
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="w-full md:w-1/2 flex flex-col"
-      >
-        <span className="text-[var(--accent-color)] font-bold tracking-widest text-sm uppercase mb-4 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
-          Phiên bản Đặc biệt
-        </span>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-2 uppercase">{TECH_PRODUCT.name}</h1>
-        <p className="text-xl text-gray-400 mb-8 font-light">{TECH_PRODUCT.tagline}</p>
+      <div className="relative z-10 w-full min-h-screen flex flex-col md:flex-row items-center px-6 md:px-24 pt-24 pb-12 gap-12 max-w-[1920px] mx-auto">
         
-        {/* Price Block */}
-        <div className="flex items-end gap-4 mb-10 border-b border-[var(--text-color)]/10 pb-8">
-          <span className="text-5xl font-bold font-mono text-[var(--accent-color)]">{TECH_PRODUCT.price}đ</span>
-          <span className="text-xl text-gray-500 line-through mb-1 font-mono">{TECH_PRODUCT.originalPrice}đ</span>
-        </div>
-
-        {/* Specs Grid - Hairline Grid, No Rounded Corners, Monospace */}
-        <div className="grid grid-cols-2 mb-10 border-t border-l border-[var(--text-color)]/20">
-          {TECH_PRODUCT.specs.map((spec, idx) => {
-            const Icon = spec.icon;
-            return (
-              <div key={idx} className="bg-transparent border-b border-r border-[var(--text-color)]/20 p-5 flex flex-col gap-3 hover:bg-[var(--accent-color)]/5 transition-colors relative group">
-                <Icon className="text-[var(--accent-color)] group-hover:scale-110 transition-transform" size={24} />
-                <span className="text-xs text-gray-400 tracking-[0.2em] uppercase">{spec.label}</span>
-                <span className="font-mono text-sm font-bold text-white tracking-wider">{spec.value}</span>
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--accent-color)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        {/* Left: Product Info */}
+        <div className="flex-1 w-full flex flex-col justify-center h-full">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-xs font-bold tracking-[0.2em] uppercase bg-black text-white px-3 py-1">New Release</span>
+              <div className="flex items-center gap-1 text-xs font-bold tracking-widest text-[#ff4500]">
+                <Star size={12} fill="currentColor" /> 4.9/5
               </div>
-            );
-          })}
+            </div>
+
+            <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-4">
+              {PRODUCT.name}
+            </h1>
+            <p className="text-2xl md:text-3xl font-light tracking-tight text-gray-500 mb-8 italic">
+              {PRODUCT.tagline}
+            </p>
+
+            <div className="flex items-baseline gap-4 mb-12">
+              <span className="text-5xl font-black tracking-tighter">{PRODUCT.price}</span>
+              <span className="text-sm font-bold text-gray-400 line-through tracking-widest">$350</span>
+            </div>
+
+            {/* Size Selector */}
+            <div className="mb-12">
+              <div className="text-xs font-bold tracking-[0.2em] uppercase mb-4 text-gray-500">Select Size (US)</div>
+              <div className="flex flex-wrap gap-2">
+                {PRODUCT.sizes.map(size => (
+                  <button 
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`w-14 h-14 border flex items-center justify-center font-bold text-lg transition-all duration-300
+                      ${selectedSize === size 
+                        ? 'border-black bg-black text-white' 
+                        : 'border-gray-300 bg-transparent text-black hover:border-black'}`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button 
+              onClick={handleAdd}
+              className="group relative bg-[#ff4500] text-white w-full md:w-auto h-20 px-12 font-bold text-sm tracking-[0.2em] uppercase overflow-hidden flex items-center justify-center gap-4"
+            >
+              {/* Button Magnetic & Fill Effect */}
+              <div className="absolute inset-0 bg-black transform scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom ease-[cubic-bezier(0.76,0,0.24,1)] z-0"></div>
+              
+              <span className="relative z-10 flex items-center gap-4">
+                {isAdded ? (
+                  <><Check size={20} /> ADDED TO CART</>
+                ) : (
+                  <>ADD TO BAG <ShoppingBag size={18} className="group-hover:translate-x-2 transition-transform duration-300" /></>
+                )}
+              </span>
+            </button>
+          </motion.div>
         </div>
 
-        {/* Actions - Sharp edges, intense glow */}
-        <div className="flex gap-0">
-          <button className="flex-1 bg-transparent text-[var(--accent-color)] font-mono font-bold tracking-widest py-5 px-6 border border-[var(--accent-color)] flex items-center justify-center gap-3 hover:bg-[var(--accent-color)] hover:text-white hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] transition-all duration-300 relative group overflow-hidden">
-            {/* Scanline effect on button */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:100%_4px] opacity-0 group-hover:opacity-100 pointer-events-none"></div>
-            <ShoppingCart size={24} />
-            MUA NGAY
-          </button>
-          <button className="px-8 py-5 border border-l-0 border-[var(--text-color)]/20 flex items-center justify-center gap-2 hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] transition-all font-mono font-bold tracking-widest text-sm uppercase">
-            So sánh <ChevronRight size={18} />
-          </button>
+        {/* Right: Immersive Product Image (Out of bounds) */}
+        <div className="flex-1 w-full h-[60vh] md:h-[80vh] relative z-20 pointer-events-none">
+          <motion.div 
+            style={{ y: yImage, scale: scaleImage, transform: transformStyle }}
+            className="absolute inset-0 w-[120%] h-[120%] -left-[10%] -top-[10%] flex items-center justify-center"
+          >
+            {/* Soft shadow underlying the shoe */}
+            <div className="absolute top-[60%] left-1/2 -translate-x-1/2 w-3/4 h-32 bg-black/30 blur-[40px] rounded-[100%] scale-y-50"></div>
+            
+            <img 
+              src={PRODUCT.image} 
+              alt={PRODUCT.name} 
+              className="w-full h-full object-contain filter drop-shadow-2xl saturate-[1.2] contrast-[1.1] rotate-[-15deg] mix-blend-multiply" 
+            />
+          </motion.div>
         </div>
-        
-        <p className="text-xs text-gray-500 mt-6 text-center">Giao hàng hỏa tốc 2H. Miễn phí đổi trả 30 ngày. Đã bao gồm VAT.</p>
-      </motion.div>
+      </div>
+      
     </div>
   );
 }
