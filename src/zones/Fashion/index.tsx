@@ -16,7 +16,7 @@ export default function FashionZone() {
   
   // Parallax effects
   const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+
 
   return (
     <div ref={containerRef} className="w-full min-h-[150vh] bg-black text-white overflow-hidden relative">

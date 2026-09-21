@@ -1,4 +1,4 @@
-import { ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
+import { ArrowUpRight, Activity } from 'lucide-react';
 
 const TRANSACTIONS = [
   { id: 'TX-99812-ABCD-4412', desc: 'Wire Transfer - Q3 Capital Injection', amount: 45000000.00, status: 'Pending Clearance', date: '2026-09-21' },

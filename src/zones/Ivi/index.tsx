@@ -1,4 +1,4 @@
-import { BatteryCharging, Music, MapPin, Navigation, Wind } from 'lucide-react';
+import { BatteryCharging, Music, Navigation, Wind } from 'lucide-react';
 
 export default function IviZone() {
   return (

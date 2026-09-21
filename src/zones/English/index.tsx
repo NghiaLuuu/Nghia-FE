@@ -1,6 +1,6 @@
 import { motion, animate, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
-import { CheckCircle2, ArrowRight, ShieldCheck, ChevronRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 
 function CountUp({ value, decimals = 1, prefix = "", suffix = "" }: { value: number, decimals?: number, prefix?: string, suffix?: string }) {
   const nodeRef = useRef<HTMLSpanElement>(null);
